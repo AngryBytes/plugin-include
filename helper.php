@@ -640,6 +640,11 @@ class helper_plugin_include extends DokuWiki_Plugin { // DokuWiki_Helper_Plugin
                 }
             }
         }
+        if($offset === false) {
+            $ins = array();
+            return;
+        }
+
         $offset = $offset ? $offset : 0;
         $end = $end ? $end : ($num - 1);
         if(is_array($ins)) {
