@@ -311,7 +311,7 @@ class helper_plugin_include extends DokuWiki_Plugin { // DokuWiki_Helper_Plugin
             return;
 
         $conv_idx = array(); // conversion index
-        $lvl_max  = false;   // max level
+        $lvl_max  = ($flags['header'] == 'page') ? 1 : false;   // max level
         $first_header = -1;
         $no_header  = false;
         $sect_title = false;
@@ -392,8 +392,7 @@ class helper_plugin_include extends DokuWiki_Plugin { // DokuWiki_Helper_Plugin
         }
 
         // calculate difference between header/section level and include level
-        $diff = 0;
-        if (!isset($lvl_max)) $lvl_max = 0; // if no level found in target, set to 0
+        if (!$lvl_max) $lvl_max = 0; // if no level found in target, set to 0
         $diff = $lvl - $lvl_max + 1;
         if ($no_header) $diff -= 1;  // push up one level if "noheader"
 
@@ -420,7 +419,6 @@ class helper_plugin_include extends DokuWiki_Plugin { // DokuWiki_Helper_Plugin
                     if($flags['header'] == 'page') {
                         $ins[$idx][1][0] = p_get_first_heading($page);
                         $ins[$idx][1][1] = 1;
-                        continue;
                     }
                 }
 
