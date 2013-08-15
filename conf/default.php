@@ -2,7 +2,7 @@
 /**
  * Options for the Include Plugin
  */
-$conf['noheader']      = 0;      // Don't display the header of the inserted section
+$conf['header']        = 'section';  // Which header to display for included sections
 $conf['firstseconly']  = 0;      // limit entries on main blog page to first section
 $conf['showtaglogos']  = 0;      // display image for first tag
 $conf['showfooter']    = 1;      // display meta line below blog entries

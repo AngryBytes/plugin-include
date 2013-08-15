@@ -5,7 +5,7 @@
  *
  * @author    Esther Brunner <wikidesign@gmail.com>
  */
-$meta['noheader']      = array('onoff');
+$meta['header']        = array('multichoice', '_choices' => array('section', 'page', 'none'));
 $meta['firstseconly']  = array('onoff');
 $meta['showtaglogos']  = array('onoff');
 $meta['showlink']      = array('onoff');

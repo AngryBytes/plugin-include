@@ -22,7 +22,7 @@ class helper_plugin_include extends DokuWiki_Plugin { // DokuWiki_Helper_Plugin
      * Constructor loads default config settings once
      */
     function __construct() {
-        $this->defaults['noheader']  = $this->getConf('noheader');
+        $this->defaults['header']    = $this->getConf('header');
         $this->defaults['firstsec']  = $this->getConf('firstseconly');
         $this->defaults['editbtn']   = $this->getConf('showeditbtn');
         $this->defaults['taglogos']  = $this->getConf('showtaglogos');
@@ -88,10 +88,13 @@ class helper_plugin_include extends DokuWiki_Plugin { // DokuWiki_Helper_Plugin
                     break;
                 case 'showheader':
                 case 'header':
-                    $flags['noheader'] = 0;
+                    $flags['header'] = 'section';
+                    break;
+                case 'pageheader':
+                    $flags['header'] = 'page';
                     break;
                 case 'noheader':
-                    $flags['noheader'] = 1;
+                    $flags['header'] = 'none';
                     break;
                 case 'editbtn':
                 case 'editbutton':
@@ -327,7 +330,7 @@ class helper_plugin_include extends DokuWiki_Plugin { // DokuWiki_Helper_Plugin
                         $sect_title = $ins[$i][1][0];
                     }
                     // check if we need to skip the first header
-                    if((!$no_header) && $flags['noheader']) {
+                    if((!$no_header) && $flags['header'] == 'none') {
                         $no_header = true;
                     }
 
@@ -393,7 +396,7 @@ class helper_plugin_include extends DokuWiki_Plugin { // DokuWiki_Helper_Plugin
         if ($no_header) $diff -= 1;  // push up one level if "noheader"
 
         // convert headers and set footer/permalink
-        $hdr_deleted      = false;
+        $hdr_done         = false;
         $has_permalink    = false;
         $footer_lvl       = false;
         $contains_secedit = false;
@@ -406,10 +409,17 @@ class helper_plugin_include extends DokuWiki_Plugin { // DokuWiki_Helper_Plugin
                     $section_close_at = $idx;
                 }
 
-                if($no_header && !$hdr_deleted) {
-                    unset ($ins[$idx]);
-                    $hdr_deleted = true;
-                    continue;
+                if(!$hdr_done) {
+                    $hdr_done = true;
+                    if($no_header) {
+                        unset($ins[$idx]);
+                        continue;
+                    }
+                    if($flags['header'] == 'page') {
+                        $ins[$idx][1][0] = p_get_first_heading($page);
+                        $ins[$idx][1][1] = 1;
+                        continue;
+                    }
                 }
 
                 if($flags['indent']) {
