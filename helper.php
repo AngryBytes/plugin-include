@@ -307,6 +307,8 @@ class helper_plugin_include extends DokuWiki_Plugin { // DokuWiki_Helper_Plugin
 
         $ns  = getNS($page);
         $num = count($ins);
+        if ($num == 0)
+            return;
 
         $conv_idx = array(); // conversion index
         $lvl_max  = false;   // max level
